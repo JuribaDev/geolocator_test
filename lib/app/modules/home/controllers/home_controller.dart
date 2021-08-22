@@ -43,11 +43,24 @@ class HomeController extends GetxController {
           icon: Icons.location_city);
     }
 
-    var position = await Geolocator.getCurrentPosition();
-    longitude(position.longitude.toString());
-    log(longitude.toString());
-    latitude(position.latitude.toString());
-    isLocationEnabeld(true);
+    if (permission == LocationPermission.always) {
+      var position = await Geolocator.getCurrentPosition();
+      longitude(position.longitude.toString());
+      log(longitude.toString());
+      latitude(position.latitude.toString());
+      isLocationEnabeld(true);
+      showSnackBar('always',
+          latitude.value.toString() + longitude.value.toString(), Colors.pink);
+    }
+    if (permission == LocationPermission.whileInUse) {
+      var position = await Geolocator.getCurrentPosition();
+      longitude(position.longitude.toString());
+      log(longitude.toString());
+      latitude(position.latitude.toString());
+      isLocationEnabeld(true);
+      showSnackBar('while in use ',
+          latitude.value.toString() + longitude.value.toString(), Colors.green);
+    }
   }
 
   askPermission() async {
@@ -57,6 +70,15 @@ class HomeController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+  }
+
+  // common snack bar
+  showSnackBar(String title, String message, Color backgroundColor) {
+    Get.snackbar(title, message,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: backgroundColor,
+        colorText: Colors.white,
+        duration: Duration(seconds: 2));
   }
 
   showDialog(
